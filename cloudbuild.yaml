@@ -1,0 +1,35 @@
+steps:
+- name: 'gcr.io/cloud-builders/docker'
+  entrypoint: 'bash'
+  args:
+  - '-c'
+  - 'echo $_DOCKER_PASSWORD | docker login -u $_DOCKER_USERNAME --password-stdin'
+  id: 'docker-login'
+- name: 'gcr.io/cloud-builders/docker'
+  args: ['build', '-t', 'docker.io/vraj1610/patel-flask-app:latest', '.']
+  id: 'build-image'
+- name: 'gcr.io/cloud-builders/docker'
+  args: ['push', 'docker.io/vraj1610/patel-flask-app:latest']
+  id: 'push-image'
+- name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+  args:
+  - compute
+  - instances
+  - update-container
+  - patel-flask-instance
+  - --zone=northamerica-northeast1-a
+  - --container-image=docker.io/vraj1610/patel-flask-app:latest
+  entrypoint: gcloud
+  id: 'update-instance'
+timeout: 1200s
+env:
+- 'DOCKER_USERNAME=$_DOCKER_USERNAME'
+- 'DOCKER_PASSWORD=$_DOCKER_PASSWORD'
+secrets:
+- id: 'dockerhub-username'
+  secret_ref: 'projects/vraj-438603/secrets/dockerhub-username/versions/latest'
+- id: 'dockerhub-password'
+  secret_ref: 'projects/vraj-438603/secrets/dockerhub-password/versions/latest'
+substitutions:
+- '_DOCKER_USERNAME': '$SECRET_dockerhub-username'
+- '_DOCKER_PASSWORD': '$SECRET_dockerhub-password'

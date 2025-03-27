@@ -22,14 +22,6 @@ steps:
   entrypoint: gcloud
   id: 'update-instance'
 timeout: 1200s
-env:
-- 'DOCKER_USERNAME=$_DOCKER_USERNAME'
-- 'DOCKER_PASSWORD=$_DOCKER_PASSWORD'
-secrets:
-- id: 'dockerhub-username'
-  secret_ref: 'projects/vraj-438603/secrets/dockerhub-username/versions/latest'
-- id: 'dockerhub-password'
-  secret_ref: 'projects/vraj-438603/secrets/dockerhub-password/versions/latest'
 substitutions:
-- '_DOCKER_USERNAME': '$SECRET_dockerhub-username'
-- '_DOCKER_PASSWORD': '$SECRET_dockerhub-password'
+  _DOCKER_USERNAME: ""
+  _DOCKER_PASSWORD: ""

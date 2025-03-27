@@ -25,3 +25,4 @@ timeout: 1200s
 substitutions:
   _DOCKER_USERNAME: ""
   _DOCKER_PASSWORD: ""
+logging: CLOUD_LOGGING_ONLY

@@ -6,10 +6,10 @@ steps:
   - 'echo $_DOCKER_PASSWORD | docker login -u $_DOCKER_USERNAME --password-stdin'
   id: 'docker-login'
 - name: 'gcr.io/cloud-builders/docker'
-  args: ['build', '-t', 'docker.io/vraj1610/patel-flask-app:latest', '.']
+  args: ['build', '-t', 'docker.io/vraj1610/patel-flask-app:v2', '.']
   id: 'build-image'
 - name: 'gcr.io/cloud-builders/docker'
-  args: ['push', 'docker.io/vraj1610/patel-flask-app:latest']
+  args: ['push', 'docker.io/vraj1610/patel-flask-app:v2']
   id: 'push-image'
 - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
   args:
@@ -18,7 +18,7 @@ steps:
   - update-container
   - patel-flask-instance
   - --zone=northamerica-northeast1-a
-  - --container-image=docker.io/vraj1610/patel-flask-app:latest
+  - --container-image=docker.io/vraj1610/patel-flask-app:v2
   entrypoint: gcloud
   id: 'update-instance'
 timeout: 1200s
